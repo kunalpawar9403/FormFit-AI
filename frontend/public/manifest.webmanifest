@@ -1,21 +1,62 @@
 {
-  "name": "FormFit AI",
-  "short_name": "FormFit",
-  "description": "Precision file, photo, signature and document preparation for official application portals.",
+  "name": "FormFit AI — Precision Document & Photo Prep",
+  "short_name": "FormFit AI",
+  "description": "Prepare photos, signatures, certificates, and PDF documents to exact official portal specifications. 100% client-side privacy.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#FAF8F6",
   "theme_color": "#FF5500",
+  "categories": ["productivity", "utilities", "photo"],
   "icons": [
     {
-      "src": "/assets/portrait.jpg",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/assets/portrait.jpg",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Photo Preparation",
+      "short_name": "Photo",
+      "description": "Resize and compress photos to exact portal specs",
+      "url": "/photo",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Signature Tool",
+      "short_name": "Signature",
+      "description": "Draw or clean signature ink",
+      "url": "/signature",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Document Scanner",
+      "short_name": "Scan",
+      "description": "Scan certificates & compile PDFs",
+      "url": "/document",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "PDF Suite",
+      "short_name": "PDF",
+      "description": "Merge, split, and compress PDFs",
+      "url": "/pdf",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

@@ -4,12 +4,12 @@ import { useTheme } from '../context/ThemeContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useApp } from '../context/AppContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
-import { Settings, Sun, Moon, Globe, Trash2, Shield } from 'lucide-react';
+import { Settings, Sun, Moon, Globe, Trash2, Shield, Smartphone, Download } from 'lucide-react';
 
 export function SettingsPage() {
   const { theme, setTheme, isDark, toggleTheme } = useTheme();
   const { lang, setLang, cycleLang } = useI18n();
-  const { clearHistory, historyItems, freeUsage, FREE_PHOTO_LIMIT, FREE_PDF_LIMIT, openUpgradeModal, isPro } = useApp();
+  const { clearHistory, historyItems, freeUsage, FREE_PHOTO_LIMIT, FREE_PDF_LIMIT, openUpgradeModal, isPro, isInstallable, promptInstall } = useApp();
   const { showToast } = useToast();
 
   return (
@@ -125,6 +125,37 @@ export function SettingsPage() {
               </button>
             </div>
 
+            {/* Install as PWA / App Row */}
+            <div className="p-3.5 rounded-2xl bg-white dark:bg-[#131922] border border-[#E6DFD7] dark:border-[#222D3D] flex items-center justify-between shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-[#FFF1EB] dark:bg-[#251A15] text-[#FF5500] flex items-center justify-center text-lg">
+                  <Smartphone className="w-5 h-5 text-[#FF5500]" />
+                </div>
+                <div>
+                  <strong className="text-sm font-bold text-[#1C1F23] dark:text-[#F5F7FA] block">
+                    Install FormFit AI App
+                  </strong>
+                  <span className="text-[11px] text-[#8E96A2]">
+                    Home screen icon & offline engine
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={async () => {
+                  if (isInstallable) {
+                    await promptInstall();
+                  } else {
+                    showToast('Tap browser menu (⋮) > "Add to Home screen" to install as WebAPK', 'info');
+                  }
+                }}
+                className="px-3.5 py-1.5 rounded-full bg-[#FF5500] text-white text-xs font-bold shadow-sm active:scale-95 transition-all flex items-center gap-1 shrink-0"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Install</span>
+              </button>
+            </div>
+
             {/* Clear Saved Data Row */}
             <div className="p-3.5 rounded-2xl bg-white dark:bg-[#131922] border border-[#E6DFD7] dark:border-[#222D3D] flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-3">
@@ -237,6 +268,38 @@ export function SettingsPage() {
                 </button>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* PWA & Desktop App Settings */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#151A22] border border-[#E6DFD7] dark:border-[#2E3A4B] space-y-4">
+          <h2 className="text-xs font-bold text-[#8E96A2] uppercase tracking-wider">
+            Installable App (PWA / WebAPK)
+          </h2>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <strong className="text-sm text-[#1C1F23] dark:text-[#F5F7FA] block font-bold">
+                Install FormFit AI on Desktop & Android
+              </strong>
+              <p className="text-xs text-[#5F6670] dark:text-[#9BA4B2] max-w-lg">
+                Run FormFit AI in a native standalone window with zero browser address bar, custom app icon, and instant offline processing.
+              </p>
+            </div>
+
+            <button
+              onClick={async () => {
+                if (isInstallable) {
+                  await promptInstall();
+                } else {
+                  showToast('Click the install icon (⊕) in your browser address bar or use Chrome menu > Install', 'info');
+                }
+              }}
+              className="px-4 py-2 rounded-xl bg-[#FF5500] hover:bg-[#E84D00] text-white text-xs font-bold shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5 shrink-0"
+            >
+              <Download className="w-4 h-4" />
+              <span>Install App</span>
+            </button>
           </div>
         </div>
 

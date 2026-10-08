@@ -17,12 +17,13 @@ import {
   Shield,
   Zap,
   LogIn,
+  Download,
 } from 'lucide-react';
 
 export function MobileNav() {
   const { t, lang, cycleLang } = useI18n();
   const { isDark, toggleTheme } = useTheme();
-  const { user, isPro, setIsUserProfileOpen, setIsAuthModalOpen, setAuthModalMode, setIsCmdPaletteOpen } = useApp();
+  const { user, isPro, setIsUserProfileOpen, setIsAuthModalOpen, setAuthModalMode, setIsCmdPaletteOpen, isInstallable, promptInstall } = useApp();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -163,6 +164,23 @@ export function MobileNav() {
                 </button>
               ))}
             </nav>
+
+            {/* Install PWA Button */}
+            <div className="pt-3 border-t border-[#F1ECE6] dark:border-[#242D3B] mt-2">
+              <button
+                onClick={async () => {
+                  if (isInstallable) {
+                    await promptInstall();
+                  } else {
+                    alert('To install FormFit AI on your device:\n\n• On Android Chrome: Tap browser menu (⋮) > "Add to Home screen" or "Install App".\n• On iOS Safari: Tap Share (⎋) > "Add to Home Screen".\n• On Desktop Chrome/Edge: Click the install icon (⊕) in the browser address bar.');
+                  }
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#FF6A00] to-[#FF5500] text-white text-xs font-bold shadow-sm active:scale-95 transition-all"
+              >
+                <Download className="w-4 h-4" />
+                <span>Install FormFit App</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

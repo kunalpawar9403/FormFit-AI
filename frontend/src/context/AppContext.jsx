@@ -70,6 +70,30 @@ export function AppProvider({ children }) {
   const [proModalFeature, setProModalFeature] = useState(null);
   const [pendingProUpgrade, setPendingProUpgrade] = useState(false);
 
+  // PWA Install Prompt State
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setIsInstallable(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const promptInstall = useCallback(async () => {
+    if (!deferredPrompt) return false;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    setDeferredPrompt(null);
+    setIsInstallable(false);
+    return outcome === 'accepted';
+  }, [deferredPrompt]);
+
   // Verify Auth & Subscription with Backend on initial load
   const verifySession = useCallback(async () => {
     const token = getStoredToken();
@@ -354,6 +378,10 @@ export function AppProvider({ children }) {
         setProModalFeature,
         pendingProUpgrade,
         setPendingProUpgrade,
+
+        // PWA Installation
+        isInstallable,
+        promptInstall,
       }}
     >
       {children}
