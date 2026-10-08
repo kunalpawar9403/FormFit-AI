@@ -49,7 +49,6 @@ FormFit AI/
 │   ├── src/                # Controllers, models, routes, middleware
 │   ├── server.js           # Server entry point (port 5050)
 │   └── package.json        # Backend dependencies & scripts
-├── tests/                  # Integration & unit test suites
 └── package.json            # Root workspace scripts
 ```
 
@@ -69,9 +68,6 @@ npm run frontend:dev
 
 # Or run backend only (http://localhost:5050)
 npm run backend:dev
-
-# Run all test suites
-npm test
 
 # Build production bundle for frontend
 npm run build
