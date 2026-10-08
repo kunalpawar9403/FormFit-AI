@@ -7,6 +7,7 @@ import { ProModal, UserProfileModal } from '../components/modals/ProModal.jsx';
 import { AuthModal } from '../components/modals/AuthModal.jsx';
 import { ProDashboardModal } from '../components/modals/ProDashboardModal.jsx';
 import { AddPresetModal } from '../components/modals/AddPresetModal.jsx';
+import { PwaInstallModal } from '../components/modals/PwaInstallModal.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useApp } from '../context/AppContext.jsx';
@@ -143,6 +144,7 @@ export function AppLayout() {
       <ProDashboardModal />
       <UserProfileModal />
       <AddPresetModal />
+      <PwaInstallModal />
     </div>
   );
 }

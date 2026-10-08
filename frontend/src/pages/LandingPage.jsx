@@ -18,11 +18,12 @@ import {
   Landmark,
   FileEdit,
   Shield,
+  Download,
 } from 'lucide-react';
 
 export function LandingPage() {
   const { t } = useI18n();
-  const { allPresets, applyPresetToPhoto, setIsProModalOpen } = useApp();
+  const { allPresets, applyPresetToPhoto, setIsProModalOpen, setIsPwaModalOpen } = useApp();
   const navigate = useNavigate();
 
   const handlePresetClick = (presetId) => {
@@ -68,6 +69,30 @@ export function LandingPage() {
           >
             <span>Browse presets</span>
           </button>
+        </div>
+
+        {/* Mobile Download PWA App Card */}
+        <div
+          onClick={() => setIsPwaModalOpen(true)}
+          className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FFF1EB] via-white to-[#FFF1EB] dark:from-[#1E1714] dark:via-[#151B24] dark:to-[#1E1714] border border-[#FED7C3] dark:border-[#3E2519] flex items-center justify-between shadow-sm cursor-pointer active:scale-[0.99] transition-all"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6A00] to-[#FF5500] text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
+              <Download className="w-5 h-5" />
+            </div>
+            <div>
+              <strong className="text-xs font-bold text-[#1C1F23] dark:text-[#F5F7FA] block">
+                Download Mobile App
+              </strong>
+              <span className="text-[11px] text-[#5F6670] dark:text-[#9BA4B2]">
+                Install as APK • Works offline
+              </span>
+            </div>
+          </div>
+
+          <span className="px-3 py-1.5 rounded-full bg-[#FF5500] hover:bg-[#E84D00] text-white text-xs font-bold shadow-sm flex items-center gap-1 shrink-0">
+            Install
+          </span>
         </div>
 
         {/* Popular Presets */}

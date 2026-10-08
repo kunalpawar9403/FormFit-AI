@@ -9,7 +9,7 @@ import { Settings, Sun, Moon, Globe, Trash2, Shield, Smartphone, Download } from
 export function SettingsPage() {
   const { theme, setTheme, isDark, toggleTheme } = useTheme();
   const { lang, setLang, cycleLang } = useI18n();
-  const { clearHistory, historyItems, freeUsage, FREE_PHOTO_LIMIT, FREE_PDF_LIMIT, openUpgradeModal, isPro, isInstallable, promptInstall } = useApp();
+  const { clearHistory, historyItems, freeUsage, FREE_PHOTO_LIMIT, FREE_PDF_LIMIT, openUpgradeModal, isPro, isInstallable, promptInstall, setIsPwaModalOpen } = useApp();
   const { showToast } = useToast();
 
   return (
@@ -142,14 +142,8 @@ export function SettingsPage() {
               </div>
 
               <button
-                onClick={async () => {
-                  if (isInstallable) {
-                    await promptInstall();
-                  } else {
-                    showToast('Tap browser menu (⋮) > "Add to Home screen" to install as WebAPK', 'info');
-                  }
-                }}
-                className="px-3.5 py-1.5 rounded-full bg-[#FF5500] text-white text-xs font-bold shadow-sm active:scale-95 transition-all flex items-center gap-1 shrink-0"
+                onClick={() => setIsPwaModalOpen(true)}
+                className="px-3.5 py-1.5 rounded-full bg-[#FF5500] hover:bg-[#E84D00] text-white text-xs font-bold shadow-sm active:scale-95 transition-all flex items-center gap-1 shrink-0"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Install</span>
@@ -288,13 +282,7 @@ export function SettingsPage() {
             </div>
 
             <button
-              onClick={async () => {
-                if (isInstallable) {
-                  await promptInstall();
-                } else {
-                  showToast('Click the install icon (⊕) in your browser address bar or use Chrome menu > Install', 'info');
-                }
-              }}
+              onClick={() => setIsPwaModalOpen(true)}
               className="px-4 py-2 rounded-xl bg-[#FF5500] hover:bg-[#E84D00] text-white text-xs font-bold shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5 shrink-0"
             >
               <Download className="w-4 h-4" />

@@ -23,7 +23,7 @@ import {
 export function MobileNav() {
   const { t, lang, cycleLang } = useI18n();
   const { isDark, toggleTheme } = useTheme();
-  const { user, isPro, setIsUserProfileOpen, setIsAuthModalOpen, setAuthModalMode, setIsCmdPaletteOpen, isInstallable, promptInstall } = useApp();
+  const { user, isPro, setIsUserProfileOpen, setIsAuthModalOpen, setAuthModalMode, setIsCmdPaletteOpen, isInstallable, promptInstall, setIsPwaModalOpen } = useApp();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,6 +50,16 @@ export function MobileNav() {
           <BrandLogo size={28} />
 
           <div className="flex items-center gap-2">
+            {/* Download / Install App Header Link */}
+            <button
+              onClick={() => setIsPwaModalOpen(true)}
+              className="px-2.5 py-1 rounded-full border border-[#FED7C3] dark:border-[#FF5500]/30 bg-[#FFF1EB] dark:bg-[#FF5500]/15 text-[#FF5500] text-xs font-bold flex items-center gap-1 active:scale-95 transition-all"
+              title="Install FormFit App"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>App</span>
+            </button>
+
             <button
               onClick={() => setIsCmdPaletteOpen(true)}
               className="w-9 h-9 rounded-full border border-[#E6DFD7] dark:border-[#222D3D] bg-white dark:bg-[#151B24] flex items-center justify-center text-[#5F6670] dark:text-[#9BA4B2] hover:text-[#FF5500] hover:border-[#FF5500] transition-colors"
@@ -168,17 +178,14 @@ export function MobileNav() {
             {/* Install PWA Button */}
             <div className="pt-3 border-t border-[#F1ECE6] dark:border-[#242D3B] mt-2">
               <button
-                onClick={async () => {
-                  if (isInstallable) {
-                    await promptInstall();
-                  } else {
-                    alert('To install FormFit AI on your device:\n\n• On Android Chrome: Tap browser menu (⋮) > "Add to Home screen" or "Install App".\n• On iOS Safari: Tap Share (⎋) > "Add to Home Screen".\n• On Desktop Chrome/Edge: Click the install icon (⊕) in the browser address bar.');
-                  }
+                onClick={() => {
+                  setIsDrawerOpen(false);
+                  setIsPwaModalOpen(true);
                 }}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#FF6A00] to-[#FF5500] text-white text-xs font-bold shadow-sm active:scale-95 transition-all"
               >
                 <Download className="w-4 h-4" />
-                <span>Install FormFit App</span>
+                <span>Download FormFit App</span>
               </button>
             </div>
           </div>

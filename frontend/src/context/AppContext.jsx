@@ -69,6 +69,7 @@ export function AppProvider({ children }) {
   const [authModalMode, setAuthModalMode] = useState('register'); // 'register' | 'login'
   const [proModalFeature, setProModalFeature] = useState(null);
   const [pendingProUpgrade, setPendingProUpgrade] = useState(false);
+  const [isPwaModalOpen, setIsPwaModalOpen] = useState(false);
 
   // PWA Install Prompt State
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -382,6 +383,8 @@ export function AppProvider({ children }) {
         // PWA Installation
         isInstallable,
         promptInstall,
+        isPwaModalOpen,
+        setIsPwaModalOpen,
       }}
     >
       {children}

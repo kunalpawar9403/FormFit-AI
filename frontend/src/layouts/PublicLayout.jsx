@@ -6,6 +6,7 @@ import { BrandLogo } from '../components/common/BrandLogo.jsx';
 import { CommandPalette } from '../components/common/CommandPalette.jsx';
 import { ProModal, UserProfileModal } from '../components/modals/ProModal.jsx';
 import { AddPresetModal } from '../components/modals/AddPresetModal.jsx';
+import { PwaInstallModal } from '../components/modals/PwaInstallModal.jsx';
 
 export function PublicLayout() {
   return (
@@ -45,6 +46,7 @@ export function PublicLayout() {
       <ProModal />
       <UserProfileModal />
       <AddPresetModal />
+      <PwaInstallModal />
     </div>
   );
 }
