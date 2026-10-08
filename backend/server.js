@@ -13,6 +13,7 @@ import usageRoutes from './src/routes/usageRoutes.js';
 
 import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,6 +50,25 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/presets', presetRoutes);
 app.use('/api/usage', usageRoutes);
+
+// SPA Fallback for client-side routing on page refresh
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
+  const localIndexPath = path.join(__dirname, 'index.html');
+  const distIndexPath = path.join(__dirname, '../frontend/dist/index.html');
+
+  if (fs.existsSync(localIndexPath)) {
+    return res.sendFile(localIndexPath);
+  }
+  if (fs.existsSync(distIndexPath)) {
+    return res.sendFile(distIndexPath);
+  }
+
+  return res.status(404).send('Not Found');
+});
 
 // Centralized Error Handling
 app.use(errorHandler);
