@@ -11,11 +11,6 @@
   },
   "rewrites": [
     { "source": "/api/:path*", "destination": { "service": "backend" } },
-    { "source": "/assets/:path*", "destination": { "service": "frontend", "path": "/assets/:path*" } },
-    { "source": "/icons/:path*", "destination": { "service": "frontend", "path": "/icons/:path*" } },
-    { "source": "/sw.js", "destination": { "service": "frontend", "path": "/sw.js" } },
-    { "source": "/manifest.webmanifest", "destination": { "service": "frontend", "path": "/manifest.webmanifest" } },
-    { "source": "/favicon.ico", "destination": { "service": "frontend", "path": "/favicon.ico" } },
-    { "source": "/:path*", "destination": { "service": "frontend", "path": "/index.html" } }
+    { "source": "/:path*", "destination": { "service": "frontend" } }
   ]
 }
