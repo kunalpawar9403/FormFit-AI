@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" width="600" height="240">
+  <path d="M 90 170 C 95 120, 110 50, 125 45 C 135 40, 175 42, 175 80 C 175 110, 140 120, 115 125 C 130 135, 170 170, 185 180 M 130 50 L 105 185" fill="none" stroke="#1A1A1A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 185 150 C 195 130, 215 125, 230 135 C 240 145, 240 170, 225 175 C 210 180, 195 165, 205 145 C 215 125, 235 125, 245 170 M 240 140 C 245 155, 250 175, 255 175" fill="none" stroke="#1A1A1A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 260 175 C 265 140, 275 80, 280 75 C 285 70, 290 100, 290 140 C 295 130, 310 125, 320 135 C 325 145, 325 165, 330 175" fill="none" stroke="#1A1A1A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 340 145 C 345 160, 350 175, 360 175 C 370 175, 375 155, 380 145 C 385 155, 390 170, 395 175" fill="none" stroke="#1A1A1A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 405 175 C 415 130, 425 70, 430 65 C 435 60, 438 80, 438 120 C 440 150, 442 170, 450 175 C 460 180, 475 170, 485 165" fill="none" stroke="#1A1A1A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 120 200 C 240 190, 400 192, 510 185" fill="none" stroke="#1A1A1A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
