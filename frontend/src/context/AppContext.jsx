@@ -199,6 +199,21 @@ export function AppProvider({ children }) {
     }
   };
 
+  const loginLocalGuest = (guestName = 'Local User') => {
+    const localUser = {
+      id: 'local_' + Math.random().toString(36).substring(2, 9),
+      name: guestName || 'Local User',
+      email: 'offline@browser.local',
+      plan: 'FREE',
+      subscriptionStatus: 'LOCAL_MODE',
+      isLocalOffline: true,
+      createdAt: new Date().toISOString(),
+    };
+    setUser(localUser);
+    setIsPro(false);
+    return localUser;
+  };
+
   const logout = async () => {
     try {
       await api.logout();
@@ -345,6 +360,7 @@ export function AppProvider({ children }) {
         isAuthLoading,
         login,
         register,
+        loginLocalGuest,
         logout,
         activatePro,
         deactivatePro,

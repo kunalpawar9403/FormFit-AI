@@ -11,6 +11,7 @@ export function AuthModal() {
     setAuthModalMode,
     login,
     register,
+    loginLocalGuest,
     setIsProModalOpen,
     pendingProUpgrade,
     setPendingProUpgrade,
@@ -124,8 +125,39 @@ export function AuthModal() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {errorMsg && (
-            <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-medium">
-              {errorMsg}
+            <div className={`p-3.5 rounded-xl border text-xs ${
+              errorMsg.toLowerCase().includes('offline')
+                ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-medium'
+            }`}>
+              <div className="font-semibold flex items-center gap-1.5 mb-1">
+                {errorMsg.toLowerCase().includes('offline') && (
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                )}
+                <span>{errorMsg}</span>
+              </div>
+
+              {errorMsg.toLowerCase().includes('offline') && (
+                <div className="mt-2 pt-2 border-t border-amber-200/60 dark:border-amber-800/60 space-y-2">
+                  <p className="text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                    To enable live MongoDB cloud sync, start the backend server:
+                  </p>
+                  <code className="block p-1.5 rounded bg-black/5 dark:bg-black/40 font-mono text-[10px] text-amber-900 dark:text-amber-200">
+                    npm run dev &nbsp;<span className="opacity-70">(runs backend:5050 & frontend:5175)</span>
+                  </code>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      loginLocalGuest(name.trim() || 'Local User');
+                      setIsAuthModalOpen(false);
+                      showToast('✓ Switched to Local Browser Mode — all tools active offline!', 'info');
+                    }}
+                    className="w-full py-2 px-3 rounded-lg bg-white dark:bg-[#1D2430] border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 font-bold text-xs hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors flex items-center justify-center gap-1.5 shadow-sm mt-1"
+                  >
+                    ⚡ Continue in Local Browser Mode
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
