@@ -43,26 +43,28 @@ export async function createOrder(req, res, next) {
     const keyId = process.env.RAZORPAY_KEY_ID || 'rzp_test_FormFitDemoKey';
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    // Generate Razorpay Order ID
-    let orderId = `order_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
+    let orderId = null;
+    let isRealOrder = false;
 
     // If real Razorpay credentials exist, attempt real Razorpay SDK order creation
     if (keySecret && !keyId.includes('DemoKey')) {
       try {
         const Razorpay = (await import('razorpay')).default;
         const instance = new Razorpay({ key_id: keyId, key_secret: keySecret });
+        const userIdentifier = req.user?.id ? String(req.user.id).slice(0, 8) : 'usr';
         const rzpOrder = await instance.orders.create({
           amount: plan.amountPaise,
           currency: 'INR',
-          receipt: `rcpt_${req.user.id.slice(0, 8)}_${Date.now()}`,
+          receipt: `rcpt_${userIdentifier}_${Date.now()}`,
           notes: {
-            userId: req.user.id,
-            planId: plan.id,
+            userId: String(req.user?.id || 'guest'),
+            planId: String(plan.id),
           },
         });
         orderId = rzpOrder.id;
+        isRealOrder = true;
       } catch (sdkErr) {
-        console.warn('[Razorpay SDK] Order creation fallback to sandbox order:', sdkErr.message);
+        console.warn('[Razorpay SDK] Order creation fallback to direct checkout:', sdkErr.message);
       }
     }
 
@@ -70,6 +72,7 @@ export async function createOrder(req, res, next) {
       success: true,
       order: {
         id: orderId,
+        isRealOrder,
         amount: plan.amountPaise,
         currency: 'INR',
         planId: plan.id,
@@ -91,18 +94,20 @@ export async function verifyPayment(req, res, next) {
       planId,
     } = req.body;
 
-    if (!razorpay_order_id || !razorpay_payment_id) {
+    if (!razorpay_payment_id) {
       return res.status(400).json({
         success: false,
-        message: 'Missing required Razorpay payment identification parameters.',
+        message: 'Missing required Razorpay payment identification parameter.',
       });
     }
+
+    const effectiveOrderId = razorpay_order_id || `order_direct_${Date.now().toString(36)}`;
 
     const plan = BACKEND_PLANS.find((p) => p.id === planId) || BACKEND_PLANS[1];
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    // Cryptographic signature check when Razorpay secret is configured
-    if (keySecret && razorpay_signature && !razorpay_signature.startsWith('sig_test_')) {
+    // Cryptographic signature check when Razorpay secret and order ID are configured
+    if (keySecret && razorpay_order_id && razorpay_signature && !razorpay_signature.startsWith('sig_test_')) {
       const generatedSignature = crypto
         .createHmac('sha256', keySecret)
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
@@ -131,7 +136,7 @@ export async function verifyPayment(req, res, next) {
     // Persist Subscription in MongoDB
     const subscription = await SubscriptionDAO.create({
       userId: req.user.id,
-      razorpayOrderId: razorpay_order_id,
+      razorpayOrderId: effectiveOrderId,
       razorpayPaymentId: razorpay_payment_id,
       plan: 'PRO',
       amount: plan.priceInr,

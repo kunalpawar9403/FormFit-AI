@@ -131,7 +131,7 @@ export async function launchRazorpayCheckout({ plan, user, onSuccess, onFailure 
 
   if (hasScript && window.Razorpay) {
     try {
-      let orderId = `order_test_${Date.now().toString(36)}`;
+      let orderId = null;
       let keyToUse = RAZORPAY_TEST_KEY;
 
       // If user has auth token, create real verified order on backend
@@ -139,9 +139,11 @@ export async function launchRazorpayCheckout({ plan, user, onSuccess, onFailure 
       if (token) {
         try {
           const orderRes = await api.createOrder(plan.id);
-          if (orderRes?.order?.id) {
+          if (orderRes?.order?.id && orderRes?.order?.isRealOrder) {
             orderId = orderRes.order.id;
             if (orderRes.order.key) keyToUse = orderRes.order.key;
+          } else if (orderRes?.order?.key) {
+            keyToUse = orderRes.order.key;
           }
         } catch (orderErr) {
           console.warn('[Razorpay] Backend order creation fallback:', orderErr.message);
@@ -154,7 +156,8 @@ export async function launchRazorpayCheckout({ plan, user, onSuccess, onFailure 
         currency: 'INR',
         name: 'FormFit AI',
         description: `Upgrade to ${plan.name} (Test Mode)`,
-        order_id: orderId.startsWith('order_') ? orderId : undefined,
+        // Only provide order_id if it's an authentic order created by Razorpay's API; omit for direct checkout
+        order_id: (orderId && !orderId.startsWith('order_test_') && !orderId.includes('_d248')) ? orderId : undefined,
         image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path d="M12 6H24L19 17H12Z" fill="%23FF5500"/></svg>',
         prefill: {
           name: user?.name || 'Applicant User',
@@ -172,7 +175,7 @@ export async function launchRazorpayCheckout({ plan, user, onSuccess, onFailure 
         handler: async (response) => {
           const paymentInfo = {
             razorpay_payment_id: response.razorpay_payment_id || `pay_test_${Date.now().toString(36)}`,
-            razorpay_order_id: response.razorpay_order_id || orderId,
+            razorpay_order_id: response.razorpay_order_id || orderId || undefined,
             razorpay_signature: response.razorpay_signature || `sig_test_${Date.now().toString(36)}`,
             planId: plan.id,
             planName: plan.name,
